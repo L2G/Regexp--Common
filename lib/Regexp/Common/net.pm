@@ -84,22 +84,19 @@ pattern name   => [qw (net domain -nospace=)],
         ;
 
 #
-# Taken straight from Regexp::IPv6 v0.03
+# Based on the ABNF from RFC 5954
 #
-my $IPv6_group = "[0-9a-fA-F]{1,4}";
-my @IPv6_tail = (
-    ":",
-    "(?k::(?k:$IPv6_group)?|$IPv4_re)",
-    ":(?k:$IPv4_re|$IPv6_group(?k::$IPv6_group)?|)",
-    "(?k::$IPv4_re|:$IPv6_group(?k::$IPv4_re|(?k::$IPv6_group){0,2})|:)",
-    "(?k:(?k::$IPv6_group){0,2}(?k::$IPv4_re|(?k::$IPv6_group){1,2})|:)",
-    "(?k:(?k::$IPv6_group){0,3}(?k::$IPv4_re|(?k::$IPv6_group){1,2})|:)",
-    "(?k:(?k::$IPv6_group){0,4}(?k::$IPv4_re|(?k::$IPv6_group){1,2})|:)"
-);
-
-my $IPv6_re = $IPv6_group;
-$IPv6_re = "$IPv6_group:(?k:$IPv6_re|$_)" for @IPv6_tail;
-$IPv6_re = qq/:(?k::$IPv6_group){0,5}(?k:(?k::$IPv6_group){1,2}|:$IPv4_re)|$IPv6_re/;
+my $IPv6_h16 = "[0-9a-fA-F]{1,4}";
+my $IPv6_ls32 = "$IPv6_h16:$IPv6_h16|$IPv4_re";
+my $IPv6_re =                                 "(?:$IPv6_h16:){6}(?:$IPv6_ls32)"
+    .                                      "|::(?:$IPv6_h16:){5}(?:$IPv6_ls32)"
+    .                        "|(?:$IPv6_h16)?::(?:$IPv6_h16:){4}(?:$IPv6_ls32)"
+    . "|(?:(?:$IPv6_h16:){0,1}(?:$IPv6_h16))?::(?:$IPv6_h16:){3}(?:$IPv6_ls32)"
+    . "|(?:(?:$IPv6_h16:){0,2}(?:$IPv6_h16))?::(?:$IPv6_h16:){2}(?:$IPv6_ls32)"
+    . "|(?:(?:$IPv6_h16:){0,3}(?:$IPv6_h16))?::(?:$IPv6_h16:){1}(?:$IPv6_ls32)"
+    . "|(?:(?:$IPv6_h16:){0,4}(?:$IPv6_h16))?::(?:$IPv6_ls32)"
+    . "|(?:(?:$IPv6_h16:){0,5}(?:$IPv6_h16))?::(?:$IPv6_h16)"
+    . "|(?:(?:$IPv6_h16:){0,6}(?:$IPv6_h16))?::";
 
 pattern name   => [qw (net IPv6)],
         create => "(?k:$IPv6_re)",
