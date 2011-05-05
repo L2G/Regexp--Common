@@ -70,6 +70,9 @@ my @generic = (
     {languages => [qw /J/],
      to_eol    => ['NB[.]']},
 
+    {languages => [qw /JavaDoc/],
+     from_to   => [[qw {/** */}]]},
+
     {languages => [qw /Nickle/],
      to_eol    => ['#'],
      from_to   => [[qw {/* */}]]},
@@ -684,6 +687,14 @@ C<//> and last till the end of the line, and comments that start with
 C</*>, and end with C<*/>. If C<{-keep}> is used, only C<$1> will be
 set, and set to the entire comment.
 
+=item JavaDoc
+
+The I<Javadoc> documentation syntax is demarked with a subset of
+ordinary Java comments to separate it from code.  Comments start with
+C</**> end with C<*/>.  If C<{-keep}> is used, only C<$1> will be set,
+and set to the entire comment. See
+L<http://www.oracle.com/technetwork/java/javase/documentation/index-137868.html#format>.
+
 =item JavaScript
 
 The I<JavaScript> language has two forms of comments. Comments that start with
@@ -782,7 +793,7 @@ C<(*>, and end with C<}> or C<*)>. This means that C<{*)> and C<(*}>
 are considered to be comments. Many Pascal applications don't allow this.
 See L<http://www.pascal-central.com/docs/iso10206.txt>
 
-=item C<$RE{comment}{Alice}>
+=item C<$RE{comment}{Pascal}{Alice}>
 
 The I<Alice Pascal> compiler accepts comments that start with C<{>
 and end with C<}>. Comments are not allowed to contain newlines.

@@ -1,3 +1,20 @@
+Version
++ Created tests for Pascal comments. 
++ https schemes are now included in $RE {URI}
++ Document non-anchoring (RT 55549)
+
+Version 2011041701 Sun Apr 17 14:22:58 CEST 2011
++ Fix documentation (matches should be match). Reported by cogent@cpan.org
+  in RT ticket 2833.
++ Added patterns for JavaDoc comments. (RT 13174 by chris+rt@chrisdolan.net)
+
+Version 2011041602 Sat Apr 16 17:06:28 CEST 2011
++ Fix typo in repository (avar@cpan.org)
+
+Version 2011041601 Sat Apr 16 16:07:29 CEST 2011
++ Fix bugs 61712 & 6940: $RE {num} {decimal} and $RE {num} {real} no longer
+  match a single dot.
+
 Version 2010010201 Sat Jan  2 17:45:53 CET 2010
 + Playing the CPANTS game
 + Adjustments for 5.005.

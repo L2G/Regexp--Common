@@ -18,7 +18,7 @@ BEGIN {
 use warnings;
 use vars qw /$VERSION %RE %sub_interface $AUTOLOAD/;
 
-$VERSION = '2010010201';
+$VERSION = '2011041701';
 
 
 sub _croak {
@@ -333,7 +333,7 @@ Regexp::Common - Provide commonly requested regular expressions
                         my $char = quotemeta $flags->{-char};
                         return '(?:^$char+$)';
                     },
-         matches => sub {
+         match   => sub {
                         my ($self, $str) = @_;
                         return $str !~ /[^$self->{flags}{-char}]/;
                     },
@@ -619,7 +619,7 @@ It is a Regexp::Common convention that the outermost capturing parentheses
 always capture the entire pattern, but this is not enforced.
 
 
-=item C<matches =E<gt> $sub_ref>
+=item C<match =E<gt> $sub_ref>
 
 An optional argument that specifies a subroutine that is to be called when
 the C<$RE{...}-E<gt>matches(...)> method of this pattern is invoked.
@@ -631,7 +631,7 @@ It should return the same types of values as a C<m/.../> does.
 
      pattern name    => [qw( line of -char )],
              create  => sub {...},
-             matches => sub {
+             match   => sub {
                              my ($self, $str) = @_;
                              $str !~ /[^$self->{flags}{-char}]/;
                         },
@@ -849,9 +849,25 @@ There are some POD issues when installing this module using a pre-5.6.0 perl;
 some manual pages may not install, or may not install correctly using a perl
 that is that old. You might consider upgrading your perl.
 
+=head1 NOT A BUG
+
+=over 4
+
+=item *
+
+The various patterns are not anchored. That is, a pattern like 
+C<< $RE {num} {int} >> will match against "abc4def", because a 
+substring of the subject matches. This is by design, and not a
+bug. If you want the pattern to be anchored, use something like:
+
+ my $integer = $RE {num} {int};
+ $subj =~ /^$integer$/ and print "Matches!\n";
+
+=back
+
 =head1 LICENSE and COPYRIGHT
 
-This software is Copyright (c) 2001 - 2009, Damian Conway and Abigail.
+This software is Copyright (c) 2001 - 2011, Damian Conway and Abigail.
 
 This module is free software, and maybe used under any of the following
 licenses:
